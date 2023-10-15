@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  dind:
+    image: docker:dind
+    privileged: true
+    networks:
+      - jenkinsnet
+
+  jenkins:
+    image: jenkins/jenkins
+    volumes:
+      - jenkins-data:/var/jenkins_home
+    networks:
+      - jenkinsnet
+    environment:
+      - DOCKER_HOST=tcp://dind:2375
+
+volumes:
+  jenkins-data:
+
+networks:
+  jenkinsnet:
